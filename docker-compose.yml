@@ -7,7 +7,6 @@ services:
       - ./converte-faturas.py:/code/converte-faturas.py
       - ./faturas:/code/faturas
       - ./requirements.txt:/code/requirements.txt
-      - ./dados-faturas:/code/dados-faturas
       - ./docker-entrypoint.sh:/code/docker-entrypoint.sh
     entrypoint: ./docker-entrypoint.sh
     command: python converte-faturas.py
