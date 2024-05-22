@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  extrator-dados:
+    image: python:3.12-slim
+    working_dir: /code
+    volumes:
+      - ./converte-faturas.py:/code/converte-faturas.py
+      - ./faturas:/code/faturas
+      - ./requirements.txt:/code/requirements.txt
+      - ./dados-faturas:/code/dados-faturas
+      - ./docker-entrypoint.sh:/code/docker-entrypoint.sh
+    entrypoint: ./docker-entrypoint.sh
+    command: python converte-faturas.py
+
+  # postgres:
+  #   image: postgres
+  #   volumes:
+  #     - ./tmp/db:/var/lib/postgresql/data
+  #   restart: always
+  #   # set shared memory limit when using docker-compose
+  #   shm_size: 128mb
+  #   # or set shared memory limit when deploy via swarm stack
+  #   #volumes:
+  #   #  - type: tmpfs
+  #   #    target: /dev/shm
+  #   #    tmpfs:
+  #   #      size: 134217728 # 128*2^20 bytes = 128Mb
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: password
+  #   ports:
+  #     - "5432:5432"
+
+
