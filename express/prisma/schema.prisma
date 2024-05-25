@@ -13,15 +13,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// {"eletric_energy_amount": "0,74860466", "energy_SCEE_without_ICMS": null, "energy_compensated_GD_I_quantity": null, "energy_compensated_GD_I_value": null, "contribution_public_ilum": "35,92"}
+//  "contribution_public_ilum": "35,92"}
 
-model Post {
+model ConsumoEnergia {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  client_number Int
+  client_number Int 
   refer_to String @db.VarChar(10)
   eletric_energy_quantity Int
-  eletric_energy_amount  Float @db.Real
+  eletric_energy_amount  Decimal @db.Decimal(9,8)
+  energy_SCEE_without_ICMS Int
+  energy_compensated_GD_I_quantity Int
+  energy_compensated_GD_I_value Decimal @db.Decimal(9,8)
+  contribution_public_ilum Decimal @db.Money
 }
