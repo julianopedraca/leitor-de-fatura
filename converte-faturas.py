@@ -31,8 +31,7 @@ for root, subdirs, files in os.walk(rootDir):
                 # get index from query
                 indexClientNumber = text.find('Nº DO CLIENTE')
                 indexReferTo = text.find('Referente a')
-                indexEletricEnergyQuantity = text.find('Energia Elétrica')
-                indexEletricEnergyAmount = text.find('Energia Elétrica')
+                indexEletricEnergy = text.find('Energia Elétrica')
                 indexEnergySCEEwICMS = text.find('Energia SCEE s/ ICMS')
                 indexEnergyCompensatedGDI = text.find('Energia compensada GD I')
                 indexContributionPublicIlum = text.find('Contrib Ilum Publica Municipal')
@@ -40,11 +39,12 @@ for root, subdirs, files in os.walk(rootDir):
                 # get value from query
                 clientNumber = text[indexClientNumber+52:indexClientNumber+70].strip() if indexClientNumber > 0 else None
                 referTo = text[indexReferTo+99:indexReferTo+110].strip() if indexReferTo > 0 else None
-                eletricEnergyQuantity = text[indexEletricEnergyQuantity+20:indexEletricEnergyQuantity+31].strip() if indexEletricEnergyAmount > 0 else None
-                eletricEnergyAmount = text[indexEletricEnergyAmount+30:indexEletricEnergyAmount+45].strip() if indexEletricEnergyAmount > 0 else None
-                energySCEEwICMS = text[indexEnergySCEEwICMS+30:indexEnergySCEEwICMS+35].strip() if indexEnergySCEEwICMS > 0 else None
+                eletricEnergyQuantity = text[indexEletricEnergy+20:indexEletricEnergy+31].strip() if indexEletricEnergy > 0 else None
+                eletricEnergyAmount = text[indexEletricEnergy+45:indexEletricEnergy+55].strip() if indexEletricEnergy > 0 else None
+                energySCEEwICMSQuantity = text[indexEnergySCEEwICMS+30:indexEnergySCEEwICMS+35].strip() if indexEnergySCEEwICMS > 0 else None
+                energySCEEwICMSAmount = text[indexEnergySCEEwICMS+50:indexEnergySCEEwICMS+60].strip() if indexEnergySCEEwICMS > 0 else None
                 energyCompensatedGDIQuantity = text[indexEnergyCompensatedGDI+30:indexEnergyCompensatedGDI+36].strip() if indexEnergyCompensatedGDI > 0 else None
-                energyCompensatedGDIValue = text[indexEnergyCompensatedGDI+36:indexEnergyCompensatedGDI+53].strip() if indexEnergyCompensatedGDI > 0 else None
+                energyCompensatedGDIAmount = text[indexEnergyCompensatedGDI+50:indexEnergyCompensatedGDI+60].strip() if indexEnergyCompensatedGDI > 0 else None
                 contributionPublicIlum = text[indexContributionPublicIlum+38:indexContributionPublicIlum+46].strip() if indexContributionPublicIlum > 0 else None
 
                 invoiceData = [
@@ -52,9 +52,10 @@ for root, subdirs, files in os.walk(rootDir):
                     ('refer_to', referTo),
                     ('eletric_energy_quantity', eletricEnergyQuantity),
                     ('eletric_energy_amount', eletricEnergyAmount),
-                    ('energy_SCEE_without_ICMS', energySCEEwICMS),
+                    ('energy_SCEE_without_ICMS_quantity', energySCEEwICMSQuantity),
+                    ('energy_SCEE_without_ICMS_amount', energySCEEwICMSAmount),
                     ('energy_compensated_GD_I_quantity', energyCompensatedGDIQuantity),
-                    ('energy_compensated_GD_I_value', energyCompensatedGDIValue),
+                    ('energy_compensated_GD_I_amount', energyCompensatedGDIAmount),
                     ('contribution_public_ilum', contributionPublicIlum),
                 ]
 
