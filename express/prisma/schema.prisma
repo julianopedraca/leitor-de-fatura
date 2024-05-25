@@ -6,25 +6,47 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["base", "test"]
 }
 
-//  "contribution_public_ilum": "35,92"}
-
-model ConsumoEnergia {
+model ConsumoEnergiaBase {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  client_number Int 
+  client_number BigInt
   refer_to String @db.VarChar(10)
   eletric_energy_quantity Int
-  eletric_energy_amount  Decimal @db.Decimal(9,8)
-  energy_SCEE_without_ICMS Int
+  eletric_energy_amount  Decimal @db.Money
+  energy_SCEE_without_ICMS_quantity Int
+  energy_SCEE_without_ICMS_amount Decimal @db.Money
   energy_compensated_GD_I_quantity Int
-  energy_compensated_GD_I_value Decimal @db.Decimal(9,8)
+  energy_compensated_GD_I_value Decimal @db.Money
   contribution_public_ilum Decimal @db.Money
+  
+  @@map("consumo_energia")
+  @@schema("base")
+}
+
+model ConsumoEnergiaTest {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  client_number BigInt
+  refer_to String @db.VarChar(10)
+  eletric_energy_quantity Int
+  eletric_energy_amount  Decimal @db.Money
+  energy_SCEE_without_ICMS_quantity Int
+  energy_SCEE_without_ICMS_amount Decimal @db.Money
+  energy_compensated_GD_I_quantity Int
+  energy_compensated_GD_I_value Decimal @db.Money
+  contribution_public_ilum Decimal @db.Money
+  
+  @@map("consumo_energia")
+  @@schema("test")
 }
