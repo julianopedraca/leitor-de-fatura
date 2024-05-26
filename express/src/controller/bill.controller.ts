@@ -18,14 +18,26 @@ class FaturaController {
             const formatedBills = this.formatBills(bills)            
             await billServive.create(formatedBills)
         } catch (error) {
-            console.log(error);
-            
             return res.status(500).json({ message: "An error ocurred while adding a new bill, try again later" })
         }
 
         return res.json({ message: "bills added" })
     }
 
+    getBills = async (req: Request, res: Response): Promise<any> => {
+        const billServive = new BillService()
+        try {
+            const result = await billServive.getAll()
+            return res.json({ result })
+        } catch (error) {
+            console.log(error);
+            
+            return res.status(500).json({ message: "An error ocurred while getting all bills, try again later" })
+        }
+    }
+
+
+    // ------- Private Functions ---------
 
     private formatStrToFloat(valor: string | null): number {
         if (valor == null) {
@@ -53,7 +65,7 @@ class FaturaController {
 
         const data = bills.map((bill) => {
             return {
-                client_number: this.formatStrToInt(bill.client_number),
+                client_number: bill.client_number,
                 refer_to: bill.refer_to,
                 eletric_energy_quantity: this.formatStrToInt(bill.eletric_energy_quantity),
                 eletric_energy_amount: this.formatStrToFloat(bill.eletric_energy_amount),

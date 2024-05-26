@@ -1,6 +1,6 @@
 export interface CreateBillDto {
     data: {
-        client_number: number, 
+        client_number: string, 
         refer_to: string,
         eletric_energy_quantity: number,
         eletric_energy_amount: number,

@@ -4,6 +4,7 @@ import { CreateBillDto } from "dto/create_bill.dto";
 describe("Testing bill controllser", () => {
     test("It should add bill to fatura db", async () => {
         const prisma = new PrismaClient()
+
         const resBody = [
             {
                 "client_number": "7005400387",
@@ -53,7 +54,7 @@ describe("Testing bill controllser", () => {
 
         const data = resBody.map((bill) => {
             return {
-                client_number: formatStrToInt(bill.client_number),
+                client_number: bill.client_number,
                 refer_to: bill.refer_to,
                 eletric_energy_quantity: formatStrToInt(bill.eletric_energy_quantity),
                 eletric_energy_amount: formatStrToFloat(bill.eletric_energy_amount),
@@ -67,7 +68,8 @@ describe("Testing bill controllser", () => {
 
         const formatedBills: CreateBillDto = {
             data: data
-        }        
+        }
+        
         const result = await prisma.consumoEnergiaTest.createMany(formatedBills)        
         expect(result).toBe(result);
     });

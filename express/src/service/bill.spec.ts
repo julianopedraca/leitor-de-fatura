@@ -1,13 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 
 describe("Test fatura service", () => {
+  const prisma = new PrismaClient()
     test("It should add bill to fatura db", async () => {
-        const prisma = new PrismaClient()
         
         const result = await prisma.consumoEnergiaTest.createMany({
             data: [
               {
-                client_number: 7005400387,
+                client_number: "7005400387",
                 refer_to: 'MAI/2023',
                 eletric_energy_quantity: 1105,
                 eletric_energy_amount: 926.34,
@@ -18,7 +18,7 @@ describe("Test fatura service", () => {
                 contribution_public_ilum: 43.1
               },
               {
-                client_number: 7005400387,
+                client_number: "7005400387",
                 refer_to: 'SET/2023',
                 eletric_energy_quantity: 50,
                 eletric_energy_amount: 47.78,
@@ -33,4 +33,12 @@ describe("Test fatura service", () => {
         
         expect(result).toBe(result);
     });
+
+    test("It should get all bills from db", async () => {
+
+      const result = await prisma.consumoEnergiaTest.findMany()
+      
+      expect(result).toBe(result);
+  });
+
   });
