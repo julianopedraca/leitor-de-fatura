@@ -1,21 +1,33 @@
 import os
 import json
-import re
+import time
+import requests
 from pypdf import PdfReader
 
-print("initiating data extraction...")
+print("initiating data extraction procedure...")
 
 reader = PdfReader
 
 rootDir = "./faturas"
 
-def encoder(obj):
-    if isinstance(obj, set):
-        return list(obj)
-    return obj
- 
+url = 'http://express:3000/'
+
+data = []
+
+i = 0
+print("connecting to server")
+while i < 10:
+    try:
+        req = requests.get(url)
+        print("server connected")
+        i = 10
+    except Exception:
+        print("Trying to connect to the server")
+        time.sleep(1)
+        pass
 
 ## look inside every folder
+print("starting data extraction...")
 for root, subdirs, files in os.walk(rootDir):
     if len(files) > 0:
         ## check files inside folder
@@ -47,22 +59,24 @@ for root, subdirs, files in os.walk(rootDir):
                 energyCompensatedGDIAmount = text[indexEnergyCompensatedGDI+50:indexEnergyCompensatedGDI+60].strip() if indexEnergyCompensatedGDI > 0 else None
                 contributionPublicIlum = text[indexContributionPublicIlum+38:indexContributionPublicIlum+46].strip() if indexContributionPublicIlum > 0 else None
 
-                invoiceData = [
-                    ('client_number', clientNumber),
-                    ('refer_to', referTo),
-                    ('eletric_energy_quantity', eletricEnergyQuantity),
-                    ('eletric_energy_amount', eletricEnergyAmount),
-                    ('energy_SCEE_without_ICMS_quantity', energySCEEwICMSQuantity),
-                    ('energy_SCEE_without_ICMS_amount', energySCEEwICMSAmount),
-                    ('energy_compensated_GD_I_quantity', energyCompensatedGDIQuantity),
-                    ('energy_compensated_GD_I_amount', energyCompensatedGDIAmount),
-                    ('contribution_public_ilum', contributionPublicIlum),
-                ]
+                invoiceData ={
+                    'client_number': clientNumber,
+                    'refer_to': referTo,
+                    'eletric_energy_quantity': eletricEnergyQuantity,
+                    'eletric_energy_amount': eletricEnergyAmount,
+                    'energy_SCEE_without_ICMS_quantity': energySCEEwICMSQuantity,
+                    'energy_SCEE_without_ICMS_amount': energySCEEwICMSAmount,
+                    'energy_compensated_GD_I_quantity': energyCompensatedGDIQuantity,
+                    'energy_compensated_GD_I_amount': energyCompensatedGDIAmount,
+                    'contribution_public_ilum': contributionPublicIlum
+                }
 
-                # build json
-                json_data = dict(invoiceData)
-                json_string = json.dumps(json_data, default=encoder)
-                print(json_string)
+                data.append(invoiceData)
                 page += 1
-
 print("data extration finished")
+print("sending data to "+url+"api/bill/add-bill")
+req = requests.post(url+"api/bill/add-bill", json = data)
+print("data sended")
+print("if you are using docker check prisma studio with the following command:")
+print("docker exec -it leitor-de-fatura-express-1 npx prisma studio")
+print("happy hacking :)")

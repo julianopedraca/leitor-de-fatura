@@ -8,13 +8,14 @@ services:
       - ./faturas:/code/faturas
       - ./requirements.txt:/code/requirements.txt
       - ./docker-entrypoint.sh:/code/docker-entrypoint.sh
-    # entrypoint: ./docker-entrypoint.sh
-    # command: python converte-faturas.py
+    entrypoint: ./docker-entrypoint.sh
+    command: python converte-faturas.py
 
   express:
     build: .  
     ports:
       - "3000:3000"
+      - "5555:5555"
     depends_on:
       - postgres
     volumes:
