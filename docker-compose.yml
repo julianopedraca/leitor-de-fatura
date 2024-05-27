@@ -40,5 +40,5 @@ services:
     build:
       dockerfile: Dockerfile.nextjs
     ports:
-      - "3001:3001"
+      - "4000:4000"
 

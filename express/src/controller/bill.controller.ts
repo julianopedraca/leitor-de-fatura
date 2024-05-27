@@ -42,8 +42,13 @@ class FaturaController {
         const clientNumber: FindClientDto = req.body
 
         try {
-            const result = await billServive.findByClientNumber(clientNumber.client_number)
-            return res.json({ result })
+            let data:any= await billServive.findByClientNumber(clientNumber.client_number)
+            
+            if (data.length === 0) {
+                data = await billServive.getAll()
+                return res.json({ data })
+            }
+            return res.json({ data })
         } catch (error) {
             console.log(error);
             
