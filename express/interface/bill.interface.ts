@@ -8,4 +8,5 @@ export interface IBill {
     energy_compensated_GD_I_quantity: string,
     energy_compensated_GD_I_amount: string,
     contribution_public_ilum: string,
+    pdf_base64: string,
 }

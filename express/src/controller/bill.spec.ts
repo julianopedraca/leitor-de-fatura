@@ -73,6 +73,21 @@ describe("Testing bill controllser", () => {
         const result = await prisma.consumoEnergiaTest.createMany(formatedBills)        
         expect(result).toBe(result);
     });
+
+    test("It should add bill to fatura db", async () => {
+        const prisma = new PrismaClient()
+
+        const result = await prisma.consumoEnergiaTest.findMany({
+            where: {
+                client_number: "7005400387"
+            }
+        })
+
+        console.log(result);
+        
+        expect(result).toBe(result);
+    });
+
 });
 
 

@@ -1,5 +1,5 @@
 import os
-import json
+import base64
 import time
 import requests
 from pypdf import PdfReader
@@ -59,6 +59,9 @@ for root, subdirs, files in os.walk(rootDir):
                 energyCompensatedGDIAmount = text[indexEnergyCompensatedGDI+50:indexEnergyCompensatedGDI+60].strip() if indexEnergyCompensatedGDI > 0 else None
                 contributionPublicIlum = text[indexContributionPublicIlum+38:indexContributionPublicIlum+46].strip() if indexContributionPublicIlum > 0 else None
 
+                # with open(file_path,"rb") as pdf_file:
+                #     encoded_string = base64.b64encode(pdf_file.read()).decode('utf-8')
+
                 invoiceData ={
                     'client_number': clientNumber,
                     'refer_to': referTo,
@@ -68,7 +71,8 @@ for root, subdirs, files in os.walk(rootDir):
                     'energy_SCEE_without_ICMS_amount': energySCEEwICMSAmount,
                     'energy_compensated_GD_I_quantity': energyCompensatedGDIQuantity,
                     'energy_compensated_GD_I_amount': energyCompensatedGDIAmount,
-                    'contribution_public_ilum': contributionPublicIlum
+                    'contribution_public_ilum': contributionPublicIlum,
+                    # 'pdf_base64': encoded_string
                 }
 
                 data.append(invoiceData)

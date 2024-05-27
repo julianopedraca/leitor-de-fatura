@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { BillService } from '../service/bill.service';
 import { CreateBillDto } from "../../dto/create_bill.dto"
 import { IBill } from 'interface/bill.interface';
+import { FindClientDto } from "../../dto/find_client_number";
 
 class FaturaController {
     /**
@@ -36,6 +37,19 @@ class FaturaController {
         }
     }
 
+    findBillsByClientNumber = async (req: Request, res: Response): Promise<any> => {
+        const billServive = new BillService()
+        const clientNumber: FindClientDto = req.body
+
+        try {
+            const result = await billServive.findByClientNumber(clientNumber.client_number)
+            return res.json({ result })
+        } catch (error) {
+            console.log(error);
+            
+            return res.status(500).json({ message: "An error ocurred while getting all bills, try again later" })
+        }
+    }
 
     // ------- Private Functions ---------
 

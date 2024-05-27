@@ -15,10 +15,21 @@ class BillService {
         return result
     }
 
-    async getAll(){
+    async getAll() {
         const result = await this.prisma.consumoEnergiaBase.findMany()
         return result
     }
+
+    async findByClientNumber(client_number:string) {
+        const result = await this.prisma.consumoEnergiaBase.findMany({
+            where: {
+                client_number: client_number
+
+            }
+        })
+        return result
+    }
+
 }
 
 export { BillService } 
