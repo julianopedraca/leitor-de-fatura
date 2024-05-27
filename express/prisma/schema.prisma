@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["base", "test"]
+}
+
+model ConsumoEnergiaBase {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  client_number String @db.VarChar(10)
+  refer_to String @db.VarChar(10)
+  eletric_energy_quantity Int
+  eletric_energy_amount  Decimal @db.Money
+  energy_SCEE_without_ICMS_quantity Int
+  energy_SCEE_without_ICMS_amount Decimal @db.Money
+  energy_compensated_GD_I_quantity Int
+  energy_compensated_GD_I_amount Decimal @db.Money
+  contribution_public_ilum Decimal @db.Money
+  bill_pdf FaturaPdfBase?
+  
+  @@map("consumo_energia")
+  @@schema("base")
+}
+
+model ConsumoEnergiaTest {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  client_number String @db.VarChar(10)
+  refer_to String @db.VarChar(10)
+  eletric_energy_quantity Int
+  eletric_energy_amount  Decimal @db.Money
+  energy_SCEE_without_ICMS_quantity Int
+  energy_SCEE_without_ICMS_amount Decimal @db.Money
+  energy_compensated_GD_I_quantity Int
+  energy_compensated_GD_I_amount Decimal @db.Money
+  contribution_public_ilum Decimal @db.Money
+  bill_pdf FaturaPdfTest?
+  
+  @@map("consumo_energia")
+  @@schema("test")
+}
+
+model FaturaPdfTest {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  energy_usage_test ConsumoEnergiaTest @relation(fields: [energy_usage_id], references: [id])
+  energy_usage_id Int @unique
+  bill_base64 String 
+
+  @@map("fatura_pdf")
+  @@schema("test")
+}
+
+model FaturaPdfBase {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  energy_usage ConsumoEnergiaBase @relation(fields: [energy_usage_id], references: [id])
+  energy_usage_id Int @unique
+  bill_base64 String 
+
+  @@map("fatura_pdf")
+  @@schema("base")
+}
