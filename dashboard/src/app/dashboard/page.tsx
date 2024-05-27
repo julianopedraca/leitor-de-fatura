@@ -91,8 +91,7 @@ export default function Page() {
       }
 
       const data = await response.json();
-      // Handle the response data as needed
-      console.log('Response data:', data);
+
       regenerateAllData(data.result)
     } catch (error) {
       console.error('Error:', error);
@@ -128,7 +127,7 @@ export default function Page() {
   const handleChange = (event:any) => {
     const { value } = event.target;
     setQuery(value);
-    handleSearch(value); // Call handleSearch with the new value
+    handleSearch(value); 
   };
 
   return (
