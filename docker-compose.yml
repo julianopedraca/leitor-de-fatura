@@ -16,10 +16,11 @@ services:
     ports:
       - "3000:3000"
       - "5555:5555"
-    depends_on:
-      - postgres
     volumes:
       - ./express:/app
+    depends_on:
+      - postgres
+    command: sh -c "npx prisma migrate deploy && npm run start"
 
   postgres:
     image: postgres
