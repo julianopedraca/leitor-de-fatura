@@ -6,8 +6,9 @@
   "scripts": {
     "test": "jest --verbose",
     "dev": "nodemon -L",
-    "start": "ts-node src/server.ts",
-    "build": "tsc && node dist/server.js"
+    "start:dev": "ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/src/server.js"
   },
   "keywords": [],
   "author": "",
